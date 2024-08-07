@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciador de Transações</title>
+    <link rel="stylesheet" href="./css/style.css">
+
+    <!-- Import do BeerCSS. CSS e Script-->
+    <link href="https://cdn.jsdelivr.net/npm/beercss@3.6.12/dist/cdn/beer.min.css" rel="stylesheet">
+    <script type="module" src="https://cdn.jsdelivr.net/npm/beercss@3.6.12/dist/cdn/beer.min.js"></script>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/material-dynamic-colors@1.1.2/dist/cdn/material-dynamic-colors.min.js"></script>
+</head>
+<body>
+    <h1>Gerenciador de Transações</h1>
+    <form id="transacaoForm">
+        <label for="tipo">Tipo:</label>
+        <select id="tipo" required>
+            <option value="entrada">Entrada</option>
+            <option value="saida">Saída</option>
+        </select>
+
+        <label for="categoria">Categoria:</label>
+        <select id="categoria" required>
+            <option value="Salários">Salários</option>
+            <option value="Rendimentos de investimentos">Rendimentos de investimentos</option>
+            <option value="Receita de negócios">Receita de negócios</option>
+            <option value="Despesas pessoais">Despesas pessoais</option>
+            <option value="Habitação">Habitação</option>
+            <option value="Transporte">Transporte</option>
+            <option value="Saúde">Saúde</option>
+            <option value="Despesas financeiras">Despesas financeiras</option>
+            <option value="Impostos">Impostos</option>
+        </select>
+
+        <label for="descricao">Descrição:</label>
+        <input type="text" id="descricao" required>
+
+        <label for="valor">Valor:</label>
+        <input type="number" id="valor" step="0.01" required>
+
+        <button type="submit">Adicionar Transação</button>
+    </form>
+
+    <label for="filtroTipo">Filtrar por Tipo:</label>
+    <select id="filtroTipo">
+        <option value="todos">Todos</option>
+        <option value="entrada">Entrada</option>
+        <option value="saida">Saída</option>
+    </select>
+
+    <div id="transacoes">
+        <h2>Transações</h2>
+    </div>
+
+    <div id="resumo">
+        <h2>Resumo do Saldo</h2>
+    </div>
+
+    <script src="./js/script.js"></script>
+</body>
+</html>
