@@ -4,15 +4,37 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gerenciador de Transações</title>
-    <link rel="stylesheet" href="./css/style.css">
-
-    <!-- Import do BeerCSS. CSS e Script-->
-    <link href="https://cdn.jsdelivr.net/npm/beercss@3.6.12/dist/cdn/beer.min.css" rel="stylesheet">
-    <script type="module" src="https://cdn.jsdelivr.net/npm/beercss@3.6.12/dist/cdn/beer.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/beercss@3.6.13/dist/cdn/beer.min.css" rel="stylesheet" />
+    <script type="module" src="https://cdn.jsdelivr.net/npm/beercss@3.6.13/dist/cdn/beer.min.js"></script>
     <script type="module" src="https://cdn.jsdelivr.net/npm/material-dynamic-colors@1.1.2/dist/cdn/material-dynamic-colors.min.js"></script>
+    <link rel="stylesheet" href="./css/style.css">
 </head>
-<body>
-    <h1>Gerenciador de Transações</h1>
+<body class="dark">
+    
+    <h1 class="titulo">Gerenciador de Transações</h1>
+
+
+    <!-- Seção de Introdução e Login -->
+    <div class="grid" id="introSection">
+        <h2>Bem-vindo ao Gerenciador de Transações!</h2>
+        <p>Transforme sua vida financeira com nosso aplicativo fácil de usar. Aqui estão algumas das funcionalidades que você encontrará:</p>
+        <ul>
+            <li><strong>Organize suas finanças:</strong> Categorize e acompanhe todas as suas transações.</li>
+            <li><strong>Relatórios detalhados:</strong> Obtenha uma visão clara de suas receitas e despesas.</li>
+            <li><strong>Planejamento eficaz:</strong> Tenha um resumo de saldo e faça planos financeiros com mais confiança.</li>
+        </ul>
+        <p>Digite seu nome para começar a aproveitar todos esses benefícios!</p>
+        
+        <!-- Seção de Login -->
+        <div id="loginSection">
+            <label for="nome">Digite seu nome:</label>
+            <input type="text" id="nome" required>
+            <button id="loginButton">Entrar</button>
+        </div>
+    </div>
+
+<!-- Seção de Adição de Transações (inicialmente oculta) -->
+<div id="transacaoSection" class="oculto">
     <form id="transacaoForm">
         <label for="tipo">Tipo:</label>
         <select id="tipo" required>
@@ -41,7 +63,14 @@
 
         <button type="submit">Adicionar Transação</button>
     </form>
+    <!-- Mensagem de Sucesso -->
+    <div id="mensagemSucesso" class="oculto">
+        Transação adicionada com sucesso!
+    </div>
+</div>
 
+<!-- Seção de Transações (inicialmente oculta) -->
+<div id="transacoesSection" class="oculto">
     <label for="filtroTipo">Filtrar por Tipo:</label>
     <select id="filtroTipo">
         <option value="todos">Todos</option>
@@ -52,10 +81,29 @@
     <div id="transacoes">
         <h2>Transações</h2>
     </div>
+</div>
 
+<!-- Seção de Resumo do Saldo (inicialmente oculta) -->
+<div id="resumoSection" class="oculto">
     <div id="resumo">
         <h2>Resumo do Saldo</h2>
+        <p>Total de Entradas: <span id="totalEntradas">R$ 0.00</span></p>
+        <p>Total de Saídas: <span id="totalSaidas">R$ 0.00</span></p>
+        <p>Saldo Final: <span id="saldoFinal">R$ 0.00</span></p>
     </div>
+</div>
+  <!-- Seção de Funções (inicialmente oculta) -->
+  <div id="funcaoSection" class="oculto">
+    <button class="align-left" id="adicionarTransacaoButton">
+        <i class="material-icons">add</i> Adicionar Transação
+    </button>
+    <button class="align-left" id="mostrarTransacoesButton">
+        <i class="material-icons">notes</i> Mostrar Transações
+    </button>
+    <button class="align-left" id="resumoSaldoButton">
+        <i class="material-icons">summary</i> Resumo do Saldo
+    </button>
+</div>
 
     <script src="./js/script.js"></script>
 </body>
