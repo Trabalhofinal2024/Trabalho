@@ -1,5 +1,5 @@
 "use strict";
-// Classe para representar uma transação financeira
+
 class AdicionarTransacao {
     constructor(t, c, d, v) {
         this.tipo = t;
@@ -8,103 +8,81 @@ class AdicionarTransacao {
         this.valor = v;
     }
 }
-// Classe para gerenciar um conjunto de transações
+
 class MinhasTransacoes {
     constructor() {
         this.transacoes = [];
     }
-    // Adiciona uma nova transação à lista
+
     adicionarTransacao(transacao) {
         this.transacoes.push(transacao);
     }
-    // Exibe transações filtradas por tipo
+
     exibirTransacoes(filtroTipo = 'todos') {
         if (filtroTipo === 'todos') {
             return this.transacoes;
         }
-        // Usando um loop for tradicional em vez de filter e map
-        const transacoesFiltradas = [];
-        for (let i = 0; i < this.transacoes.length; i++) {
-            const transacao = this.transacoes[i];
-            if (transacao.tipo === filtroTipo) {
-                transacoesFiltradas.push(transacao);
-            }
-        }
-        return transacoesFiltradas;
+        return this.transacoes.filter(transacao => transacao.tipo === filtroTipo);
     }
-    // Obtém o resumo do saldo com base nas transações
+
     obterResumoSaldo() {
         const entradas = [];
         const saidas = [];
-        // Usando um loop for tradicional em vez de filter e map
-        for (let i = 0; i < this.transacoes.length; i++) {
-            const transacao = this.transacoes[i];
+        this.transacoes.forEach(transacao => {
             if (transacao.tipo === 'entrada') {
                 entradas.push(transacao.valor);
-            }
-            else if (transacao.tipo === 'saida') {
+            } else if (transacao.tipo === 'saida') {
                 saidas.push(transacao.valor);
             }
-        }
+        });
         return new ResumoSaldo(entradas, saidas);
     }
 }
-// Classe para calcular e exibir o resumo do saldo
+
 class ResumoSaldo {
     constructor(entradas, saidas) {
         this.entradas = entradas;
         this.saidas = saidas;
     }
-    // Calcula o saldo total (entradas - saídas)
+
     calcularSaldo() {
-        let totalEntradas = 0;
-        let totalSaidas = 0;
-        for (let i = 0; i < this.entradas.length; i++) {
-            totalEntradas += this.entradas[i];
-        }
-        for (let i = 0; i < this.saidas.length; i++) {
-            totalSaidas += this.saidas[i];
-        }
+        const totalEntradas = this.entradas.reduce((acc, valor) => acc + valor, 0);
+        const totalSaidas = this.saidas.reduce((acc, valor) => acc + valor, 0);
         return totalEntradas - totalSaidas;
     }
-    // Gera um resumo formatado do saldo
+
     resumo() {
-        let totalEntradas = 0;
-        let totalSaidas = 0;
-        for (let i = 0; i < this.entradas.length; i++) {
-            totalEntradas += this.entradas[i];
-        }
-        for (let i = 0; i < this.saidas.length; i++) {
-            totalSaidas += this.saidas[i];
-        }
+        const totalEntradas = this.entradas.reduce((acc, valor) => acc + valor, 0);
+        const totalSaidas = this.saidas.reduce((acc, valor) => acc + valor, 0);
         const saldo = this.calcularSaldo();
-        return `Resumo do Saldo:
-                Total de Entradas: R$ ${totalEntradas.toFixed(2)}
-                Total de Saídas: R$ ${totalSaidas.toFixed(2)}
-                Saldo Final: R$ ${saldo.toFixed(2)}`;
+        return {
+            totalEntradas: totalEntradas.toFixed(2),
+            totalSaidas: totalSaidas.toFixed(2),
+            saldo: saldo.toFixed(2)
+        };
     }
 }
-// Classe para gerenciar a interface do usuário
+
 class InterfaceUsuario {
     constructor() {
         this.minhasTransacoes = new MinhasTransacoes();
     }
-    // Adiciona uma nova transação e atualiza a interface
+
     adicionarTransacao(tipo, categoria, descricao, valor) {
         const transacao = new AdicionarTransacao(tipo, categoria, descricao, valor);
         this.minhasTransacoes.adicionarTransacao(transacao);
         this.atualizarInterface();
     }
-    // Exibe transações filtradas por tipo
+
     exibirTransacoes(filtroTipo = 'todos') {
         return this.minhasTransacoes.exibirTransacoes(filtroTipo);
     }
-    // Exibe o resumo do saldo
+
     exibirResumo() {
         const resumoSaldo = this.minhasTransacoes.obterResumoSaldo();
         return resumoSaldo.resumo();
     }
-    // Atualiza a interface do usuário com as transações e resumo
+
     atualizarInterface() {
         const filtroTipo = document.getElementById('filtroTipo').value;
         const transacoesDiv = document.getElementById('transacoes');
@@ -121,16 +99,62 @@ class InterfaceUsuario {
             `;
             transacoesDiv.appendChild(transacaoDiv);
         });
-        const resumoDiv = document.getElementById('resumo');
-        resumoDiv.innerHTML = this.exibirResumo();
+
+        const resumoDados = this.exibirResumo();
+        document.getElementById('totalEntradas').textContent = `R$ ${resumoDados.totalEntradas}`;
+        document.getElementById('totalSaidas').textContent = `R$ ${resumoDados.totalSaidas}`;
+        document.getElementById('saldoFinal').textContent = `R$ ${resumoDados.saldo}`;
     }
 }
-// Lógica de manipulação do DOM
+
 document.addEventListener('DOMContentLoaded', function () {
     const interfaceUsuario = new InterfaceUsuario();
-    // Manipulador de envio do formulário
+
+    // Seção de Login
+    const loginSection = document.getElementById('introSection'); // Atualizado para a seção de introdução
+    const funcaoSection = document.getElementById('funcaoSection');
+    const transacaoSection = document.getElementById('transacaoSection');
+    const transacoesSection = document.getElementById('transacoesSection');
+    const resumoSection = document.getElementById('resumoSection');
+    const loginButton = document.getElementById('loginButton');
+    const nomeInput = document.getElementById('nome');
+
+    // Botões de Funções
+    const adicionarTransacaoButton = document.getElementById('adicionarTransacaoButton');
+    const mostrarTransacoesButton = document.getElementById('mostrarTransacoesButton');
+    const resumoSaldoButton = document.getElementById('resumoSaldoButton');
+
+    // Formulário de Transações
     const form = document.getElementById('transacaoForm');
     const filtroTipo = document.getElementById('filtroTipo');
+
+    loginButton.addEventListener('click', function () {
+        if (nomeInput.value.trim() !== '') {
+            loginSection.style.display = 'none'; // Oculta a seção de introdução
+            funcaoSection.style.display = 'block';
+        }
+    });
+
+    adicionarTransacaoButton.addEventListener('click', function () {
+        transacaoSection.style.display = 'block';
+        transacoesSection.style.display = 'none';
+        resumoSection.style.display = 'none';
+    });
+
+    mostrarTransacoesButton.addEventListener('click', function () {
+        transacaoSection.style.display = 'none';
+        transacoesSection.style.display = 'block';
+        resumoSection.style.display = 'none';
+        interfaceUsuario.atualizarInterface();
+    });
+
+    resumoSaldoButton.addEventListener('click', function () {
+        transacaoSection.style.display = 'none';
+        transacoesSection.style.display = 'none';
+        resumoSection.style.display = 'block';
+        interfaceUsuario.atualizarInterface();
+    });
+
     form.addEventListener('submit', function (event) {
         event.preventDefault();
         const tipo = document.getElementById('tipo').value;
@@ -138,11 +162,26 @@ document.addEventListener('DOMContentLoaded', function () {
         const descricao = document.getElementById('descricao').value;
         const valor = parseFloat(document.getElementById('valor').value);
         interfaceUsuario.adicionarTransacao(tipo, categoria, descricao, valor);
+
+        // Limpar os campos do formulário
+        document.getElementById('tipo').value = '';
+        document.getElementById('categoria').value = '';
+        document.getElementById('descricao').value = '';
+        document.getElementById('valor').value = '';
+
+        // Exibir a mensagem de sucesso
+        const mensagemSucesso = document.getElementById('mensagemSucesso');
+        mensagemSucesso.style.display = 'block';
+
+        // Ocultar a mensagem de sucesso após 3 segundos
+        setTimeout(() => {
+            mensagemSucesso.style.display = 'none';
+        }, 3000);
     });
-    // Manipulador de mudança do filtro de tipo
+
     filtroTipo.addEventListener('change', function () {
         interfaceUsuario.atualizarInterface();
     });
-    // Atualiza a interface ao carregar a página
+
     interfaceUsuario.atualizarInterface();
 });
