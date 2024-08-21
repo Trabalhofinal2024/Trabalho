@@ -45,33 +45,52 @@ class ResumoSaldo {
         this.entradas = entradas;
         this.saidas = saidas;
     }
+
     // Calcula o saldo total (entradas - saídas)
     calcularSaldo() {
         let totalEntradas = 0;
         let totalSaidas = 0;
-        for (let i = 0; i < this.entradas.length; i++) {
+
+        // Calcular total de entradas usando um loop `while`
+        let i = 0;
+        while (i < this.entradas.length) {
             totalEntradas += this.entradas[i];
+            i++;
         }
-        for (let i = 0; i < this.saidas.length; i++) {
-            totalSaidas += this.saidas[i];
+
+        // Calcular total de saídas usando um loop `for`
+        for (let j = 0; j < this.saidas.length; j++) {
+            totalSaidas += this.saidas[j];
         }
+
         return totalEntradas - totalSaidas;
     }
+
     // Gera um resumo formatado do saldo
     resumo() {
         let totalEntradas = 0;
         let totalSaidas = 0;
-        for (let i = 0; i < this.entradas.length; i++) {
+
+        // Calcular total de entradas usando um loop `while`
+        let i = 0;
+        while (i < this.entradas.length) {
             totalEntradas += this.entradas[i];
+            i++;
         }
-        for (let i = 0; i < this.saidas.length; i++) {
-            totalSaidas += this.saidas[i];
+
+        // Calcular total de saídas usando um loop `for`
+        for (let j = 0; j < this.saidas.length; j++) {
+            totalSaidas += this.saidas[j];
         }
+
         const saldo = this.calcularSaldo();
-        return `Resumo do Saldo:
-                Total de Entradas: R$ ${totalEntradas.toFixed(2)}
-                Total de Saídas: R$ ${totalSaidas.toFixed(2)}
-                Saldo Final: R$ ${saldo.toFixed(2)}`;
+
+        // Retornar um objeto com os valores ao invés de uma string
+        return {
+            totalEntradas: totalEntradas,
+            totalSaidas: totalSaidas,
+            saldo: saldo
+        };
     }
 }
 
